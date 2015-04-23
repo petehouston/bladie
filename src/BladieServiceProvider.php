@@ -40,7 +40,7 @@ class BladieServiceProvider extends ServiceProvider {
         });
 
         $blade->extend(function ($view, $compiler) {
-            $pattern = $compiler->createMatcher('endguest');
+            $pattern = $compiler->createPlainMatcher('endguest');
             return preg_replace($pattern, '<?php endif; ?> ', $view);
         });
 
