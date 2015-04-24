@@ -34,15 +34,28 @@ class BladieServiceProvider extends ServiceProvider {
         // get blade compiler
         $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 
-        $blade->extend(function ($view, $compiler) {
-            $pattern = $compiler->createMatcher('guest');
-            return preg_replace($pattern, '<?php if (Auth::guest()): ?> ', $view);
+        // add guest
+        addGuest($blade);
+
+    }
+
+    /**
+     * Add Auth::guest() checking syntax
+     *
+     * @param [Blade] $blade the Blade compiler
+     */
+    protected function addGuest($blade)
+    {
+        $blade->extend(function($view, $compiler)
+        {
+            return preg_replace('/@guest/', '<?php if( Auth::guest() ): ?>', $view);
         });
 
-        $blade->extend(function ($view, $compiler) {
+        $blade->extend(function($view, $compiler)
+        {
             $pattern = $compiler->createPlainMatcher('endguest');
-            return preg_replace($pattern, '<?php endif; ?> ', $view);
-        });
 
+            return preg_replace($pattern, '<?php endif; ?>', $view);
+        });
     }
 }
