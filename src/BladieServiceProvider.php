@@ -35,7 +35,7 @@ class BladieServiceProvider extends ServiceProvider {
         $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
 
         // add guest
-        addGuest($blade);
+        $this->addGuest($blade);
 
     }
 
